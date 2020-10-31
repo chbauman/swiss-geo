@@ -71,3 +71,28 @@ def scrape_swiss_lakes(project_dir: str) -> None:
     with open(write_path, "w") as f:
         json.dump(res_list, f)
     return
+
+
+def scrape_swiss_passes(project_dir: str) -> None:
+    url = "https://de.wikipedia.org/wiki/Liste_der_Pässe_in_der_Schweiz"
+    soup = get_and_clean(url, remove_table=False, remove_empty=False, remove_span=False, sc_tags=["b", "i"])
+    mount_table = soup.findAll("table", {"class": "wikitable"})[0]
+    res_list = []
+    for v in mount_table.findAll("tr"):
+        all_td = list(v.findAll("td"))
+        if len(all_td) > 6:
+            src_kt = all_td[1].find("span").text
+            src_gem = all_td[1].findAll("a")[1].text
+            dst_kt = all_td[2].find("span").text
+            dst_gem = all_td[2].findAll("a")[1].text
+            entry = [dat.text.strip() for dat in all_td][:5]
+            entry = [entry[0], src_kt, src_gem, dst_kt, dst_gem, str(int(entry[-2])), str(int(entry[-1]))]
+            res_list.append(entry)
+            print(entry)
+
+    # Save to json
+    print(f"Total {len(res_list)} Swiss passes.")
+    write_path = os.path.join(project_dir, "data", "pass.json")
+    with open(write_path, "w") as f:
+        json.dump(res_list, f)
+    return

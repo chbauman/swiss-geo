@@ -34,6 +34,7 @@
         const promise_gem = load_json("./data/gem.json");
         const promise_mount = load_json("./data/mount.json");
         const promise_lake = load_json("./data/lakes.json");
+        const promise_pass = load_json("./data/pass.json");
 
         function choose_gem() {
             state = "gem";
@@ -109,10 +110,40 @@
             });
         }
 
+
+        function choose_pass() {
+            state = "pass";
+
+            return promise_pass.then(function (data) {
+                const n_gems = data.length;
+                const curr_gem = data[rand_int(n_gems)];
+                const name = curr_gem[0];
+                const title = name;
+                let q_str, res;
+                q_str = "Der Pass mit Namen " + name + " führt von " + curr_gem[2] + " (" + curr_gem[1] + ") nach ";
+                q_str = q_str + curr_gem[4] + " (" + curr_gem[3] + "). ";
+                const select = rand_int(2);
+                if (select === 0) {
+                    const h = curr_gem[5];
+                    q_str = q_str + "Wie hoch liegt die Passhöhe des Passes (in m.ü.M.)?";
+                    res = "Die Passhöhe liegt auf " + h + " m.ü.M.";
+                } else {
+                    const h = curr_gem[6];
+                    q_str = q_str + "Wie lange ist der Pass (in km)?";
+                    res = "Der Pass ist " + h + " km lang.";
+                }
+                document.getElementById('dd_menu').innerHTML = "Pässe";
+                document.getElementById('main_title').innerHTML = title;
+                document.getElementById('quest').innerHTML = q_str;
+                return res;
+            });
+        }
+
         const state_fun_map = {
             "gem": choose_gem,
             "mount": choose_mount,
             "lake": choose_lake,
+            "pass": choose_pass,
         };
 
         function reload() {
@@ -146,6 +177,7 @@
                 <li onclick="state = 'gem'; reload();" id="gem" class="btn container dropdown">Gemeinden</li>
                 <li onclick="state = 'mount'; reload();" id="mount" class="btn container dropdown">Berge</li>
                 <li onclick="state = 'lake'; reload();" id="lake" class="btn container dropdown">Seen</li>
+                <li onclick="state = 'pass'; reload();" id="pass" class="btn container dropdown">Pässe</li>
             </ul>
         </div>
     </nav>
