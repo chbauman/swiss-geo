@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html  lang="de">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="static/main.css">
+
+    <script>
+        console.log("Initializing...");
+        let state = "gem";
+
+        // Load json data
+        const request = async () => {
+            const response = await fetch("./data/gem.json");
+            return response.json();
+        };
+        const gem_promise = request();
+        let state_promise;
+
+
+        function rand_int(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function choose_gem() {
+            state = "gem";
+            return gem_promise.then(function (data) {
+                const n_gems = data.length;
+                const curr_gem = data[rand_int(n_gems)];
+                const name = curr_gem[0] + " (" + curr_gem[1] + ")";
+                let q_str, res;
+                if (rand_int(2) === 1) {
+                    const n_inhabitants = curr_gem[3];
+                    q_str = "Wie viele Einwohner hat " + name + "?";
+                    res = name + " hat " + n_inhabitants + " Einwohner.";
+                } else {
+                    const area = curr_gem[3];
+                    q_str = "Wie gross ist die Fläche von " + name + " (in km^2)?";
+                    res = name + " hat eine Fläche von " + area + " km^2.";
+                }
+                document.getElementById('main_title').innerHTML = name;
+                document.getElementById('quest').innerHTML = q_str;
+                document.getElementById('dd_menu').innerHTML = "Gemeinden";
+                return res;
+            });
+        }
+
+        function choose_mount() {
+            state = "mount";
+            document.getElementById('dd_menu').innerHTML = "Berge";
+        }
+
+        const state_fun_map = {
+            "gem": choose_gem,
+            "mount": choose_mount,
+        };
+
+        function reload() {
+            state_promise = state_fun_map[state]();
+            console.log("Reload");
+            console.log(state_promise);
+        }
+
+        function solve() {
+            state_promise.then(function (sol) {
+                document.getElementById('quest').innerHTML = String(sol);
+            });
+        }
+        reload();
+    </script>
+
+    <title>Guess Game</title>
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+            <div class="btn btn-primary navbar-brand mr-4" onclick="reload();">Neue Frage</div>
+            <div class="btn btn-primary navbar-brand mr-4" onclick="solve();">Result</div>
+        </div>
+        <div class="container dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dd_menu">Initial
+                label
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li onclick="choose_gem();" id="gem" class="btn container dropdown">Gemeinden</li>
+                <li onclick="choose_mount();" id="mount" class="btn container dropdown">Berge</li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 id="main_title"></h1>
+            <p id="quest"></p>
+        </div>
+    </div>
+</main>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>
