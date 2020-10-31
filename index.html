@@ -115,7 +115,6 @@
             });
         }
 
-
         function choose_pass() {
             state = "pass";
 
@@ -155,7 +154,7 @@
                 let q_str, res;
                 q_str = `Das fliessende Gewässer (${curr_gem[3]}) mit Namen ${name} befindet sich in ${curr_gem[1]}`;
                 const len = curr_gem[2];
-                q_str = q_str + ". Wie lange ist der Fluss (in km)?";
+                q_str = q_str + ". Wie lange ist das Gewässer (in km)?";
                 res = "Das Gewässer hat eine Länge von " + len;
                 document.getElementById('dd_menu').innerHTML = "Flüsse";
                 document.getElementById('main_title').innerHTML = title;
@@ -174,8 +173,6 @@
 
         function reload() {
             state_promise = state_fun_map[state]();
-            console.log("Reload");
-            console.log(state_promise);
         }
 
         function solve() {
