@@ -33,6 +33,7 @@
         // Load json data
         const promise_gem = load_json("./data/gem.json");
         const promise_mount = load_json("./data/mount.json");
+        const promise_lake = load_json("./data/lakes.json");
 
         function choose_gem() {
             state = "gem";
@@ -82,9 +83,36 @@
             });
         }
 
+        function choose_lake() {
+            state = "lake";
+
+            return promise_lake.then(function (data) {
+                const n_gems = data.length;
+                const curr_gem = data[rand_int(n_gems)];
+                const name = curr_gem[1];
+                const title = curr_gem[1] + ", " + curr_gem[0];
+                let q_str, res;
+                const select = rand_int(2);
+                if (select === 0) {
+                    const area = curr_gem[3];
+                    q_str = "Wie gross ist der " + name + " (in km^2)?";
+                    res = "Der " + name + " hat eine Fläche von " + area + " km^2.";
+                } else {
+                    const h = curr_gem[4];
+                    q_str = "Wie hoch liegt der " + name + " (in m. ü. M.)?";
+                    res = "Der " + name + " liegt auf einer Höhe von " + h;
+                }
+                document.getElementById('dd_menu').innerHTML = "Seen";
+                document.getElementById('main_title').innerHTML = title;
+                document.getElementById('quest').innerHTML = q_str;
+                return res;
+            });
+        }
+
         const state_fun_map = {
             "gem": choose_gem,
             "mount": choose_mount,
+            "lake": choose_lake,
         };
 
         function reload() {
@@ -117,6 +145,7 @@
             <ul class="dropdown-menu">
                 <li onclick="state = 'gem'; reload();" id="gem" class="btn container dropdown">Gemeinden</li>
                 <li onclick="state = 'mount'; reload();" id="mount" class="btn container dropdown">Berge</li>
+                <li onclick="state = 'lake'; reload();" id="lake" class="btn container dropdown">Seen</li>
             </ul>
         </div>
     </nav>

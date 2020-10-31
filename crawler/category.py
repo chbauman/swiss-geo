@@ -15,9 +15,10 @@ def scrape_swiss_villages(project_dir: str) -> None:
             if f"({entry[1]})" in entry[0]:
                 entry[0] = entry[0][:-5]
             res_list.append(entry)
-            print(entry)
+            # print(entry)
 
     # Save to json
+    print(f"Total {len(res_list)} Swiss gemeinden.")
     write_path = os.path.join(project_dir, "data", "gem.json")
     with open(write_path, "w") as f:
         json.dump(res_list, f)
@@ -33,7 +34,7 @@ def scrape_swiss_mountains(project_dir: str) -> None:
         if len(entry) >= 6:
             entry = entry[:2] + [e.split(" ")[0] for e in entry[-2:]]
             res_list.append(entry)
-            print(entry)
+            # print(entry)
 
     # Save to json
     print(f"Total {len(res_list)} Swiss mountains.")
@@ -62,7 +63,7 @@ def scrape_swiss_lakes(project_dir: str) -> None:
             if len(entry) > 0:
                 entry = [c] + entry[1:3] + entry[5:7]
                 res_list.append(entry)
-                print(entry)
+                # print(entry)
 
     # Save to json
     print(f"Total {len(res_list)} Swiss lakes.")
