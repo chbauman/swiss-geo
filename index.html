@@ -36,6 +36,7 @@
         const promise_mount = load_json("./data/mount.json");
         const promise_lake = load_json("./data/lakes.json");
         const promise_pass = load_json("./data/pass.json");
+        const promise_river = load_json("./data/river.json");
 
         function choose_gem() {
             state = "gem";
@@ -140,11 +141,32 @@
             });
         }
 
+        function choose_river() {
+            state = "river";
+
+            return promise_river.then(function (data) {
+                const n_gems = data.length;
+                const curr_gem = data[rand_int(n_gems)];
+                const name = curr_gem[0];
+                const title = name;
+                let q_str, res;
+                q_str = "Das fliessende Gewässer ("+ curr_gem[3] + ") mit Namen " + name + " befindet sich in " + curr_gem[1];
+                const len = curr_gem[2];
+                q_str = q_str + ". Wie lange ist der Fluss (in km)?";
+                res = "Das Gewässer hat eine Länge von " + len;
+                document.getElementById('dd_menu').innerHTML = "Flüsse";
+                document.getElementById('main_title').innerHTML = title;
+                document.getElementById('quest').innerHTML = q_str;
+                return res;
+            });
+        }
+
         const state_fun_map = {
             "gem": choose_gem,
             "mount": choose_mount,
             "lake": choose_lake,
             "pass": choose_pass,
+            "river": choose_river,
         };
 
         function reload() {
@@ -178,6 +200,7 @@
                 <li onclick="state = 'gem'; reload();" id="gem" class="btn container dropdown">Gemeinden</li>
                 <li onclick="state = 'mount'; reload();" id="mount" class="btn container dropdown">Berge</li>
                 <li onclick="state = 'lake'; reload();" id="lake" class="btn container dropdown">Seen</li>
+                <li onclick="state = 'river'; reload();" id="river" class="btn container dropdown">Flüsse</li>
                 <li onclick="state = 'pass'; reload();" id="pass" class="btn container dropdown">Pässe</li>
             </ul>
         </div>
