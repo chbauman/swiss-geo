@@ -1,7 +1,6 @@
-.ipynb_checkpoints
 venv
-_image_overlays
 .vscode
+*/__pycache__/*
 
 debug.log
 google-chrome-stable_current_amd64.deb
