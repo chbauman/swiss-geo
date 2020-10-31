@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  lang="de">
+<html lang="de">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -15,22 +15,28 @@
         console.log("Initializing...");
         let state = "gem";
 
-        // Load json data
-        const request = async () => {
-            const response = await fetch("./data/gem.json");
-            return response.json();
-        };
-        const gem_promise = request();
+        // Promise for result string
         let state_promise;
 
-
+        // Helper functions
+        function load_json(path) {
+            const request = async () => {
+                const response = await fetch(path);
+                return response.json();
+            };
+            return request();
+        }
         function rand_int(max) {
             return Math.floor(Math.random() * max);
         }
 
+        // Load json data
+        const promise_gem = load_json("./data/gem.json");
+        const promise_mount = load_json("./data/mount.json");
+
         function choose_gem() {
             state = "gem";
-            return gem_promise.then(function (data) {
+            return promise_gem.then(function (data) {
                 const n_gems = data.length;
                 const curr_gem = data[rand_int(n_gems)];
                 const name = curr_gem[0] + " (" + curr_gem[1] + ")";
@@ -44,16 +50,36 @@
                     q_str = "Wie gross ist die Fläche von " + name + " (in km^2)?";
                     res = name + " hat eine Fläche von " + area + " km^2.";
                 }
+                document.getElementById('dd_menu').innerHTML = "Gemeinden";
                 document.getElementById('main_title').innerHTML = name;
                 document.getElementById('quest').innerHTML = q_str;
-                document.getElementById('dd_menu').innerHTML = "Gemeinden";
                 return res;
             });
         }
 
         function choose_mount() {
             state = "mount";
-            document.getElementById('dd_menu').innerHTML = "Berge";
+
+            return promise_mount.then(function (data) {
+                const n_gems = data.length;
+                const curr_gem = data[rand_int(n_gems)];
+                const name = curr_gem[0];
+                let q_str, res;
+                const select = rand_int(2);
+                if (select === 0) {
+                    const height = curr_gem[1];
+                    q_str = "Wie hoch ist der Berg " + name + " (in m)?";
+                    res = "Die Höhe des Berges " + name + " ist " + height + "m.";
+                } else {
+                    const dom = curr_gem[3];
+                    q_str = "Wie gross ist die Distanz zum nächthöheren Punkt (in km)?";
+                    res = "Die Distanz zum nächthöheren Punkt ist " + dom + "km.";
+                }
+                document.getElementById('dd_menu').innerHTML = "Berge";
+                document.getElementById('main_title').innerHTML = name;
+                document.getElementById('quest').innerHTML = q_str;
+                return res;
+            });
         }
 
         const state_fun_map = {
@@ -72,6 +98,7 @@
                 document.getElementById('quest').innerHTML = String(sol);
             });
         }
+
         reload();
     </script>
 
@@ -85,8 +112,7 @@
             <div class="btn btn-primary navbar-brand mr-4" onclick="solve();">Result</div>
         </div>
         <div class="container dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dd_menu">Initial
-                label
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dd_menu">Initial label
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li onclick="choose_gem();" id="gem" class="btn container dropdown">Gemeinden</li>
