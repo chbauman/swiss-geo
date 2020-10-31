@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="static/main.css">
     <link rel="icon" href="./data/icon.png">
@@ -189,39 +191,22 @@
 </head>
 <body>
 <header class="site-header">
-    <div class="navbar navbar-dark bg-steel fixed-top">
+    <nav class="navbar navbar-dark bg-steel fixed-top">
         <button type="button" class="btn btn-primary" onclick="reload();">Neue Frage</button>
         <button type="button" class="btn btn-primary" onclick="solve();">Auflösung</button>
-        <div class="btn-group">
+        <div class="dropdown">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dd_menu">
                 Initial label
             </button>
-                <ul class="dropdown-menu">
-                    <li onclick="state = 'gem'; reload();" id="gem" class="btn container dropdown">Gemeinden</li>
-                    <li onclick="state = 'mount'; reload();" id="mount" class="btn container dropdown">Berge</li>
-                    <li onclick="state = 'lake'; reload();" id="lake" class="btn container dropdown">Seen</li>
-                    <li onclick="state = 'river'; reload();" id="river" class="btn container dropdown">Flüsse</li>
-                    <li onclick="state = 'pass'; reload();" id="pass" class="btn container dropdown">Pässe</li>
-                </ul>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li onclick="state = 'gem'; reload();" id="gem" class="btn container">Gemeinden</li>
+                <li onclick="state = 'mount'; reload();" id="mount" class="btn container">Berge</li>
+                <li onclick="state = 'lake'; reload();" id="lake" class="btn container">Seen</li>
+                <li onclick="state = 'river'; reload();" id="river" class="btn container">Flüsse</li>
+                <li onclick="state = 'pass'; reload();" id="pass" class="btn container">Pässe</li>
+            </ul>
         </div>
-    </div>
-<!--    <nav class="navbar navbar-expand-md navbar-expand-sm navbar-dark bg-steel fixed-top">-->
-<!--        <div class="btn btn-primary navbar-brand mr-auto" onclick="reload();">Neue Frage</div>-->
-<!--        <div class="btn btn-primary navbar-brand mr-auto" onclick="solve();">Auflösung</div>-->
-
-<!--        <div class="dropdown navbar-brand mr-auto">-->
-<!--            <button class="btn btn-primary dropdown" type="button" data-toggle="dropdown"-->
-<!--                    id="dd_menu">Initial label-->
-<!--            </button>-->
-<!--            <ul class="dropdown-menu">-->
-<!--                <li onclick="state = 'gem'; reload();" id="gem" class="btn container dropdown">Gemeinden</li>-->
-<!--                <li onclick="state = 'mount'; reload();" id="mount" class="btn container dropdown">Berge</li>-->
-<!--                <li onclick="state = 'lake'; reload();" id="lake" class="btn container dropdown">Seen</li>-->
-<!--                <li onclick="state = 'river'; reload();" id="river" class="btn container dropdown">Flüsse</li>-->
-<!--                <li onclick="state = 'pass'; reload();" id="pass" class="btn container dropdown">Pässe</li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--    </nav>-->
+    </nav>
 </header>
 <main role="main" class="container">
     <div class="row">
@@ -231,18 +216,5 @@
         </div>
     </div>
 </main>
-
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
 </body>
 </html>
