@@ -1,0 +1,7 @@
+.ipynb_checkpoints
+venv
+_image_overlays
+.vscode
+
+debug.log
+google-chrome-stable_current_amd64.deb
