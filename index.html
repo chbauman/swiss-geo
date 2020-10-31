@@ -153,7 +153,7 @@
                 const name = curr_gem[0];
                 const title = name;
                 let q_str, res;
-                q_str = "Das fliessende Gewässer (" + curr_gem[3] + ") mit Namen " + name + " befindet sich in " + curr_gem[1];
+                q_str = `Das fliessende Gewässer (${curr_gem[3]}) mit Namen ${name} befindet sich in ${curr_gem[1]}`;
                 const len = curr_gem[2];
                 q_str = q_str + ". Wie lange ist der Fluss (in km)?";
                 res = "Das Gewässer hat eine Länge von " + len;

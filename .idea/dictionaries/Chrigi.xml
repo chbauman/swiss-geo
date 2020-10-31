@@ -2,22 +2,27 @@
   <dictionary name="Chrigi">
     <words>
       <w>auflösung</w>
+      <w>befindet</w>
       <w>berge</w>
       <w>berges</w>
       <w>distanz</w>
       <w>eine</w>
       <w>einer</w>
       <w>einwohner</w>
+      <w>fliessende</w>
+      <w>fluss</w>
       <w>fläche</w>
       <w>flüsse</w>
       <w>frage</w>
       <w>führt</w>
       <w>gemeinden</w>
+      <w>gewässer</w>
       <w>hoch</w>
       <w>höhe</w>
       <w>kanton</w>
       <w>lange</w>
       <w>liegt</w>
+      <w>länge</w>
       <w>nach</w>
       <w>namen</w>
       <w>navbar</w>
@@ -27,6 +32,7 @@
       <w>punkt</w>
       <w>pässe</w>
       <w>schweizer</w>
+      <w>sich</w>
       <w>toggler</w>
       <w>viele</w>
       <w>wikitable</w>
