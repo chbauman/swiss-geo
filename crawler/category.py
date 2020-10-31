@@ -88,11 +88,90 @@ def scrape_swiss_passes(project_dir: str) -> None:
             entry = [dat.text.strip() for dat in all_td][:5]
             entry = [entry[0], src_kt, src_gem, dst_kt, dst_gem, str(int(entry[-2])), str(int(entry[-1]))]
             res_list.append(entry)
-            print(entry)
+            # print(entry)
 
     # Save to json
     print(f"Total {len(res_list)} Swiss passes.")
     write_path = os.path.join(project_dir, "data", "pass.json")
+    with open(write_path, "w") as f:
+        json.dump(res_list, f)
+    return
+
+
+c_list = [
+    "Zürich",
+    "Bern",
+    "Luzern",
+    "Uri",
+    "Schwyz",
+    "Obwalden",
+    "Nidwalden",
+    "Glarus",
+    "Zug",
+    "Freiburg",
+    "Solothurn",
+    "Basel-Stadt",
+    "Basel-Landschaft",
+    "Schaffhausen",
+    "Appenzell-ausserrhoden",
+    "Appenzell-innerrhoden",
+    "st-Gallen",
+    "Graubünden",
+    "Aargau",
+    "Thurgau",
+    "Tessin",
+    "Waadt",
+    "Wallis",
+    "Neuenburg",
+    "Genf",
+    "Jura",
+]
+
+
+def scrape_swiss_rivers(project_dir: str) -> None:
+    url = "https://schweizerfluss.ch/"
+    res_list = []
+
+    for k in c_list:
+        k_new = k.lower().replace("ü", "ue").replace("ö", "oe").replace("ä", "ae")
+
+        ct = 1
+        max_pages = 10000
+        while True:
+            k_url = url + "kanton/" + k_new
+            if ct > 1:
+                k_url = f"{k_url}/page/{ct}/"
+            soup = get_and_clean(k_url, remove_table=False, remove_empty=False, remove_span=False,
+                                 sc_tags=["b", "i"], add_remove_tags=["script"])
+            res_boxes = soup.findAll("div", {"class": "resultbox"})
+            for r in res_boxes:
+                name = r.find("h2").text.replace(u'\xa0', u' ').strip()
+                cantons = r.find("h3").text.replace(u'\xa0', u' ').strip()
+                length = r.find("span").text.replace(u'\xa0', u' ').strip()
+                len_int = int(length.split(" ")[1])
+                if len_int < 10:
+                    continue
+                river_class = r.findAll("span")[-1].text.replace(u'\xa0', u' ').strip()
+                river_class = " ".join(river_class.split(" ")[:-1])
+                entry = [name, cantons, length[7:], river_class[8:]]
+                res_list.append(entry)
+                print(entry)
+
+            # Find number of sub pages
+            if ct == 1:
+                pn = soup.findAll("a", {"class": "page-numbers"})
+                if len(pn) == 0:
+                    break
+                pn = pn[-2]
+                max_pages = int(pn.text)
+                pass
+            ct += 1
+            if ct > max_pages:
+                break
+
+    # Save to json
+    print(f"Total {len(res_list)} Swiss rivers.")
+    write_path = os.path.join(project_dir, "data", "river.json")
     with open(write_path, "w") as f:
         json.dump(res_list, f)
     return
