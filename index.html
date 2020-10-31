@@ -115,8 +115,8 @@
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="dd_menu">Initial label
                 <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li onclick="choose_gem();" id="gem" class="btn container dropdown">Gemeinden</li>
-                <li onclick="choose_mount();" id="mount" class="btn container dropdown">Berge</li>
+                <li onclick="state = 'gem'; reload();" id="gem" class="btn container dropdown">Gemeinden</li>
+                <li onclick="state = 'mount'; reload();" id="mount" class="btn container dropdown">Berge</li>
             </ul>
         </div>
     </nav>

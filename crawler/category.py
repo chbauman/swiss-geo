@@ -1,6 +1,5 @@
 import json
 import os
-from typing import List
 
 from crawler import get_and_clean
 
