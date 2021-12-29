@@ -1,217 +1,270 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="static/main.css">
-    <link rel="icon" href="./data/icon.png">
+    <link rel="stylesheet" type="text/css" href="static/main.css" />
+    <link rel="icon" href="./data/icon.png" />
 
     <script>
-        console.log("Initializing...");
-        let state = "gem";
+      console.log("Initializing...");
+      let state = "gem";
 
-        // Promise for result string
-        let state_promise;
+      // Promise for result string
+      let state_promise;
 
-        // Helper functions
-        function load_json(path) {
-            const request = async () => {
-                const response = await fetch(path);
-                return response.json();
-            };
-            return request();
-        }
-
-        function rand_int(max) {
-            return Math.floor(Math.random() * max);
-        }
-
-        // Load json data
-        const promise_gem = load_json("./data/gem.json");
-        const promise_mount = load_json("./data/mount.json");
-        const promise_lake = load_json("./data/lakes.json");
-        const promise_pass = load_json("./data/pass.json");
-        const promise_river = load_json("./data/river.json");
-
-        function choose_gem() {
-            state = "gem";
-            return promise_gem.then(function (data) {
-                const n_gems = data.length;
-                const curr_gem = data[rand_int(n_gems)];
-                const name = curr_gem[0] + " (" + curr_gem[1] + ")";
-                let q_str, res;
-                if (rand_int(2) === 1) {
-                    const n_inhabitants = curr_gem[3];
-                    q_str = "Wie viele Einwohner hat " + name + "?";
-                    res = name + " hat " + n_inhabitants + " Einwohner.";
-                } else {
-                    const area = curr_gem[3];
-                    q_str = "Wie gross ist die Fläche von " + name + " (in km^2)?";
-                    res = name + " hat eine Fläche von " + area + " km^2.";
-                }
-                document.getElementById('dd_menu').innerHTML = "Gemeinden";
-                document.getElementById('main_title').innerHTML = name;
-                document.getElementById('quest').innerHTML = q_str;
-                return res;
-            });
-        }
-
-        function choose_mount() {
-            state = "mount";
-
-            return promise_mount.then(function (data) {
-                const n_gems = data.length;
-                const curr_gem = data[rand_int(n_gems)];
-                const name = curr_gem[0];
-                let q_str, res;
-                const select = rand_int(2);
-                if (select === 0) {
-                    const height = curr_gem[1];
-                    q_str = "Wie hoch ist der Berg " + name + " (in m)?";
-                    res = "Die Höhe des Berges " + name + " ist " + height + "m.";
-                } else {
-                    const dom = curr_gem[2];
-                    q_str = "Wie gross ist die Distanz zum nächthöheren Punkt (in km)?";
-                    res = "Die Distanz zum nächthöheren Punkt ist " + dom + "km.";
-                }
-                document.getElementById('dd_menu').innerHTML = "Berge";
-                document.getElementById('main_title').innerHTML = name;
-                document.getElementById('quest').innerHTML = q_str;
-                return res;
-            });
-        }
-
-        function choose_lake() {
-            state = "lake";
-
-            return promise_lake.then(function (data) {
-                const n_gems = data.length;
-                const curr_gem = data[rand_int(n_gems)];
-                const name = curr_gem[1];
-                const title = curr_gem[1] + ", " + curr_gem[0];
-                let q_str, res;
-                const select = rand_int(2);
-                if (select === 0) {
-                    const area = curr_gem[3];
-                    q_str = "Wie gross ist der " + name + " (in km^2)?";
-                    res = "Der " + name + " hat eine Fläche von " + area + " km^2.";
-                } else {
-                    const h = curr_gem[4];
-                    q_str = "Wie hoch liegt der " + name + " (in m. ü. M.)?";
-                    res = "Der " + name + " liegt auf einer Höhe von " + h;
-                }
-                document.getElementById('dd_menu').innerHTML = "Seen";
-                document.getElementById('main_title').innerHTML = title;
-                document.getElementById('quest').innerHTML = q_str;
-                return res;
-            });
-        }
-
-        function choose_pass() {
-            state = "pass";
-
-            return promise_pass.then(function (data) {
-                const n_gems = data.length;
-                const curr_gem = data[rand_int(n_gems)];
-                const name = curr_gem[0];
-                const title = name;
-                let q_str, res;
-                q_str = "Der Pass mit Namen " + name + " führt von " + curr_gem[2] + " (" + curr_gem[1] + ") nach ";
-                q_str = q_str + curr_gem[4] + " (" + curr_gem[3] + "). ";
-                const select = rand_int(2);
-                if (select === 0) {
-                    const h = curr_gem[5];
-                    q_str = q_str + "Wie hoch liegt die Passhöhe des Passes (in m.ü.M.)?";
-                    res = "Die Passhöhe liegt auf " + h + " m.ü.M.";
-                } else {
-                    const h = curr_gem[6];
-                    q_str = q_str + "Wie lange ist der Pass (in km)?";
-                    res = "Der Pass ist " + h + " km lang.";
-                }
-                document.getElementById('dd_menu').innerHTML = "Pässe";
-                document.getElementById('main_title').innerHTML = title;
-                document.getElementById('quest').innerHTML = q_str;
-                return res;
-            });
-        }
-
-        function choose_river() {
-            state = "river";
-
-            return promise_river.then(function (data) {
-                const n_gems = data.length;
-                const curr_gem = data[rand_int(n_gems)];
-                const name = curr_gem[0];
-                const title = name;
-                let q_str, res;
-                q_str = `Das fliessende Gewässer (${curr_gem[3]}) mit Namen ${name} befindet sich in ${curr_gem[1]}`;
-                const len = curr_gem[2];
-                q_str = q_str + ". Wie lange ist das Gewässer (in km)?";
-                res = "Das Gewässer hat eine Länge von " + len;
-                document.getElementById('dd_menu').innerHTML = "Flüsse";
-                document.getElementById('main_title').innerHTML = title;
-                document.getElementById('quest').innerHTML = q_str;
-                return res;
-            });
-        }
-
-        const state_fun_map = {
-            "gem": choose_gem,
-            "mount": choose_mount,
-            "lake": choose_lake,
-            "pass": choose_pass,
-            "river": choose_river,
+      // Helper functions
+      function load_json(path) {
+        const request = async () => {
+          const response = await fetch(path);
+          return response.json();
         };
+        return request();
+      }
 
-        function reload() {
-            state_promise = state_fun_map[state]();
-        }
+      function rand_int(max) {
+        return Math.floor(Math.random() * max);
+      }
 
-        function solve() {
-            state_promise.then(function (sol) {
-                document.getElementById('quest').innerHTML = String(sol);
-            });
-        }
+      // Load json data
+      const promise_gem = load_json("./data/gem.json");
+      const promise_mount = load_json("./data/mount.json");
+      const promise_lake = load_json("./data/lakes.json");
+      const promise_pass = load_json("./data/pass.json");
+      const promise_river = load_json("./data/river.json");
 
-        reload();
+      function choose_gem() {
+        state = "gem";
+        return promise_gem.then(function (data) {
+          const n_gems = data.length;
+          const curr_gem = data[rand_int(n_gems)];
+          const name = curr_gem[0] + " (" + curr_gem[1] + ")";
+          let q_str, res;
+          if (rand_int(2) === 1) {
+            const n_inhabitants = curr_gem[3];
+            q_str = "Wie viele Einwohner hat " + name + "?";
+            res = name + " hat " + n_inhabitants + " Einwohner.";
+          } else {
+            const area = curr_gem[3];
+            q_str = "Wie gross ist die Fläche von " + name + " (in km^2)?";
+            res = name + " hat eine Fläche von " + area + " km^2.";
+          }
+          document.getElementById("dd_menu").innerHTML = "Gemeinden";
+          document.getElementById("main_title").innerHTML = name;
+          document.getElementById("quest").innerHTML = q_str;
+          return res;
+        });
+      }
+
+      function choose_mount() {
+        state = "mount";
+
+        return promise_mount.then(function (data) {
+          const n_gems = data.length;
+          const curr_gem = data[rand_int(n_gems)];
+          const name = curr_gem[0];
+          let q_str, res;
+          const select = rand_int(2);
+          if (select === 0) {
+            const height = curr_gem[1];
+            q_str = "Wie hoch ist der Berg " + name + " (in m)?";
+            res = "Die Höhe des Berges " + name + " ist " + height + "m.";
+          } else {
+            const dom = curr_gem[2];
+            q_str = "Wie gross ist die Distanz zum nächthöheren Punkt (in km)?";
+            res = "Die Distanz zum nächthöheren Punkt ist " + dom + "km.";
+          }
+          document.getElementById("dd_menu").innerHTML = "Berge";
+          document.getElementById("main_title").innerHTML = name;
+          document.getElementById("quest").innerHTML = q_str;
+          return res;
+        });
+      }
+
+      function choose_lake() {
+        state = "lake";
+
+        return promise_lake.then(function (data) {
+          const n_gems = data.length;
+          const curr_gem = data[rand_int(n_gems)];
+          const name = curr_gem[1];
+          const title = curr_gem[1] + ", " + curr_gem[0];
+          let q_str, res;
+          const select = rand_int(2);
+          if (select === 0) {
+            const area = curr_gem[3];
+            q_str = "Wie gross ist der " + name + " (in km^2)?";
+            res = "Der " + name + " hat eine Fläche von " + area + " km^2.";
+          } else {
+            const h = curr_gem[4];
+            q_str = "Wie hoch liegt der " + name + " (in m. ü. M.)?";
+            res = "Der " + name + " liegt auf einer Höhe von " + h;
+          }
+          document.getElementById("dd_menu").innerHTML = "Seen";
+          document.getElementById("main_title").innerHTML = title;
+          document.getElementById("quest").innerHTML = q_str;
+          return res;
+        });
+      }
+
+      function choose_pass() {
+        state = "pass";
+
+        return promise_pass.then(function (data) {
+          const n_gems = data.length;
+          const curr_gem = data[rand_int(n_gems)];
+          const name = curr_gem[0];
+          const title = name;
+          let q_str, res;
+          q_str =
+            "Der Pass mit Namen " +
+            name +
+            " führt von " +
+            curr_gem[2] +
+            " (" +
+            curr_gem[1] +
+            ") nach ";
+          q_str = q_str + curr_gem[4] + " (" + curr_gem[3] + "). ";
+          const select = rand_int(2);
+          if (select === 0) {
+            const h = curr_gem[5];
+            q_str =
+              q_str + "Wie hoch liegt die Passhöhe des Passes (in m.ü.M.)?";
+            res = "Die Passhöhe liegt auf " + h + " m.ü.M.";
+          } else {
+            const h = curr_gem[6];
+            q_str = q_str + "Wie lange ist der Pass (in km)?";
+            res = "Der Pass ist " + h + " km lang.";
+          }
+          document.getElementById("dd_menu").innerHTML = "Pässe";
+          document.getElementById("main_title").innerHTML = title;
+          document.getElementById("quest").innerHTML = q_str;
+          return res;
+        });
+      }
+
+      function choose_river() {
+        state = "river";
+
+        return promise_river.then(function (data) {
+          const n_gems = data.length;
+          const curr_gem = data[rand_int(n_gems)];
+          const name = curr_gem[0];
+          const title = name;
+          let q_str, res;
+          q_str = `Das fliessende Gewässer (${curr_gem[3]}) mit Namen ${name} befindet sich in ${curr_gem[1]}`;
+          const len = curr_gem[2];
+          q_str = q_str + ". Wie lange ist das Gewässer (in km)?";
+          res = "Das Gewässer hat eine Länge von " + len;
+          document.getElementById("dd_menu").innerHTML = "Flüsse";
+          document.getElementById("main_title").innerHTML = title;
+          document.getElementById("quest").innerHTML = q_str;
+          return res;
+        });
+      }
+
+      const state_fun_map = {
+        gem: choose_gem,
+        mount: choose_mount,
+        lake: choose_lake,
+        pass: choose_pass,
+        river: choose_river,
+      };
+
+      function reload() {
+        state_promise = state_fun_map[state]();
+      }
+
+      function solve() {
+        state_promise.then(function (sol) {
+          document.getElementById("quest").innerHTML = String(sol);
+        });
+      }
+
+      reload();
     </script>
 
     <title>Swiss Quiz</title>
-</head>
-<body>
-<header class="site-header">
-    <nav class="navbar navbar-dark bg-steel fixed-top">
-        <button type="button" class="btn btn-primary" onclick="reload();">Neue Frage</button>
-        <button type="button" class="btn btn-primary" onclick="solve();">Auflösung</button>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar navbar-dark bg-steel fixed-top">
+        <button type="button" class="btn btn-primary" onclick="reload();">
+          Neue Frage
+        </button>
+        <button type="button" class="btn btn-primary" onclick="solve();">
+          Auflösung
+        </button>
         <div class="dropdown">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dd_menu">
-                Initial label
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-                <li onclick="state = 'gem'; reload();" id="gem" class="btn container">Gemeinden</li>
-                <li onclick="state = 'mount'; reload();" id="mount" class="btn container">Berge</li>
-                <li onclick="state = 'lake'; reload();" id="lake" class="btn container">Seen</li>
-                <li onclick="state = 'river'; reload();" id="river" class="btn container">Flüsse</li>
-                <li onclick="state = 'pass'; reload();" id="pass" class="btn container">Pässe</li>
-            </ul>
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+            id="dd_menu"
+          >
+            Initial label
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li
+              onclick="state = 'gem'; reload();"
+              id="gem"
+              class="btn container"
+            >
+              Gemeinden
+            </li>
+            <li
+              onclick="state = 'mount'; reload();"
+              id="mount"
+              class="btn container"
+            >
+              Berge
+            </li>
+            <li
+              onclick="state = 'lake'; reload();"
+              id="lake"
+              class="btn container"
+            >
+              Seen
+            </li>
+            <li
+              onclick="state = 'river'; reload();"
+              id="river"
+              class="btn container"
+            >
+              Flüsse
+            </li>
+            <li
+              onclick="state = 'pass'; reload();"
+              id="pass"
+              class="btn container"
+            >
+              Pässe
+            </li>
+          </ul>
         </div>
-    </nav>
-</header>
-<main role="main" class="container">
-    <div class="row">
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
         <div class="col-md-8">
-            <h1 id="main_title"></h1>
-            <p id="quest"></p>
+          <h1 id="main_title"></h1>
+          <p id="quest"></p>
         </div>
-    </div>
-</main>
-</body>
+      </div>
+    </main>
+  </body>
 </html>
