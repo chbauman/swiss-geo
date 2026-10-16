@@ -94,7 +94,7 @@ main {
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -153,19 +153,14 @@ main {
   cursor: pointer;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: var(--accent-dark);
-}
-
 .btn-secondary {
   background: var(--card);
   color: var(--accent-dark);
   border: 2px solid var(--accent);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--header-bg);
 }
 
 .btn:disabled {
