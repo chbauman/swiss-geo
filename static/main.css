@@ -1,11 +1,13 @@
 :root {
-  --bg: #f4f6f8;
+  --bg: #eaf4fb;
   --card: #ffffff;
   --text: #26323a;
   --muted: #667782;
-  --border: #dde3e8;
-  --accent: #5f788a;
-  --accent-dark: #4a6171;
+  --border: #c9dff0;
+  --accent: #2a7bbd;
+  --accent-dark: #1f6fae;
+  --header-bg: #bfe0f7;
+  --header-text: #10304a;
   --answer-bg: #e8f3ec;
   --answer-border: #4c9a6a;
 }
@@ -23,16 +25,30 @@ body {
 }
 
 .site-header {
-  background: var(--accent);
-  color: #fff;
+  background: var(--header-bg);
+  color: var(--header-text);
   padding: 0.9rem 1rem;
 }
 
-.site-header h1 {
-  margin: 0 auto;
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   max-width: 40rem;
+  margin: 0 auto;
+}
+
+.site-header h1 {
+  margin: 0;
   font-size: 1.15rem;
   font-weight: 600;
+}
+
+.logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
 }
 
 main {
@@ -56,7 +72,7 @@ main {
   min-height: 44px;
   padding: 0.4rem 1rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 4px;
   background: var(--card);
   color: var(--text);
   font: inherit;
@@ -78,7 +94,7 @@ main {
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -123,33 +139,38 @@ main {
   max-width: 40rem;
   margin: 0 auto;
   padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--bg) 70%, rgba(244, 246, 248, 0));
+  background: linear-gradient(to top, var(--bg) 70%, rgba(234, 244, 251, 0));
 }
 
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   flex: 1;
   min-height: 52px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 4px;
   font: inherit;
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
 }
 
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: var(--accent-dark);
+.icon {
+  width: 1.3em;
+  height: 1.3em;
+  flex: none;
 }
 
 .btn-secondary {
   background: var(--card);
   color: var(--accent-dark);
   border: 2px solid var(--accent);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--header-bg);
 }
 
 .btn:disabled {

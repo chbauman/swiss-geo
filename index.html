@@ -201,7 +201,10 @@
   </head>
   <body>
     <header class="site-header">
-      <h1>Swiss Quiz</h1>
+      <div class="header-inner">
+        <h1>Swiss Quiz</h1>
+        <img src="./data/icon.png" alt="Schweizer Flagge" class="logo" />
+      </div>
     </header>
     <main>
       <ul class="categories" id="categories" aria-label="Kategorien (Mehrfachauswahl)"></ul>
@@ -213,10 +216,12 @@
     </main>
     <div class="actions">
       <button type="button" class="btn btn-secondary" id="solve" onclick="solve()">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5C7 5 2.7 8.1 1 12c1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" fill="currentColor"/></svg>
         Auflösung
       </button>
-      <button type="button" class="btn btn-primary" onclick="reload()">
+      <button type="button" class="btn btn-secondary" onclick="reload()">
         Neue Frage
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-1.4 1.4 5.6 5.6H4v2h12.2l-5.6 5.6L12 20l8-8z" fill="currentColor"/></svg>
       </button>
     </div>
   </body>
