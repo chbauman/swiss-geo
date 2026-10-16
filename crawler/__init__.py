@@ -8,6 +8,11 @@ from crawler.util import strip_tags, remove_tags, remove_comments, remove_empty_
 MAX_N_PARAGRAPHS: int = 3
 RANDOM_WIKI_ARTICLE_URL = "https://de.wikipedia.org/wiki/Spezial:Zuf%C3%A4llige_Seite"
 
+# Wikimedia rejects requests without a descriptive User-Agent
+HEADERS = {
+    "User-Agent": "swiss-geo-crawler/1.0 (https://github.com/chbauman/swiss-geo)"
+}
+
 on_click = "onclick=\"document.getElementById('guess').innerHTML = '{}'\""
 t_mid = f'<span id="guess" {on_click} style="background-color:#f88;">{{}}</span>'
 
@@ -22,7 +27,8 @@ def get_and_clean(
 ):
     if sc_tags is None:
         sc_tags = ["a", "b", "i"]
-    response = requests.get(url)
+    response = requests.get(url, headers=HEADERS, timeout=60)
+    response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
 
     # Remove unnecessary stuff
