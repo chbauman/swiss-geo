@@ -143,6 +143,10 @@ main {
 }
 
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   flex: 1;
   min-height: 52px;
   border: 0;
@@ -151,6 +155,12 @@ main {
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.icon {
+  width: 1.3em;
+  height: 1.3em;
+  flex: none;
 }
 
 .btn-secondary {
