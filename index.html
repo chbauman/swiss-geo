@@ -92,7 +92,7 @@
             return {
               title,
               question: `Wie hoch liegt der ${name} (in m ü. M.)?`,
-              answer: `Der ${name} liegt auf einer Höhe von ${row[4]}.`,
+              answer: `Der ${name} liegt auf einer Höhe von ${row[4].replace(/\.$/, "")}.`,
             };
           },
         },
