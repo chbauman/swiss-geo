@@ -48,9 +48,7 @@ def scrape_swiss_lakes(project_dir: str) -> None:
     url = "https://de.wikipedia.org/wiki/Liste_der_Seen_in_der_Schweiz"
     soup = get_and_clean(url, remove_table=False)
     soup_el = soup.find("div", {"class": "mw-content-ltr"})
-    soup_el = soup_el.findAll(
-        "ul",
-    )[1]
+    soup_el = soup_el.findAll("ul")[1]
     res_list = []
     for v in soup_el.findAll("li"):
         url_part = "_".join(v.text.split(" "))
