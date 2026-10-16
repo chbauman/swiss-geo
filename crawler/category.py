@@ -84,7 +84,11 @@ def scrape_swiss_passes(project_dir: str) -> None:
         remove_span=False,
         sc_tags=["b", "i"],
     )
-    mount_table = soup.findAll("table", {"class": "wikitable"})[0]
+    tables = soup.findAll("table", {"class": "wikitable"})
+    if not tables:
+        found = [t.get("class") for t in soup.findAll("table")]
+        raise RuntimeError(f"No wikitable found at {url}; tables on page: {found}")
+    mount_table = tables[0]
     res_list = []
     for v in mount_table.findAll("tr"):
         all_td = list(v.findAll("td"))
