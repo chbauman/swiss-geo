@@ -48,7 +48,7 @@ body {
   display: block;
   width: 32px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: 2px;
 }
 
 main {
@@ -72,7 +72,7 @@ main {
   min-height: 44px;
   padding: 0.4rem 1rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 4px;
   background: var(--card);
   color: var(--text);
   font: inherit;
@@ -146,7 +146,7 @@ main {
   flex: 1;
   min-height: 52px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 4px;
   font: inherit;
   font-size: 1.05rem;
   font-weight: 600;
