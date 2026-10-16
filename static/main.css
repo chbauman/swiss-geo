@@ -30,11 +30,25 @@ body {
   padding: 0.9rem 1rem;
 }
 
-.site-header h1 {
-  margin: 0 auto;
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   max-width: 40rem;
+  margin: 0 auto;
+}
+
+.site-header h1 {
+  margin: 0;
   font-size: 1.15rem;
   font-weight: 600;
+}
+
+.logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
 }
 
 main {
