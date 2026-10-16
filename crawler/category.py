@@ -167,10 +167,23 @@ def scrape_swiss_rivers(project_dir: str) -> None:
             )
             res_boxes = soup.findAll("div", {"class": "resultbox"})
             for r in res_boxes:
-                name = r.find("h2").text.replace("\xa0", " ").strip()
-                cantons = r.find("h3").text.replace("\xa0", " ").strip()
-                length = r.find("span").text.replace("\xa0", " ").strip()
-                len_int = int(length.split(" ")[1])
+                h2, h3, span = r.find("h2"), r.find("h3"), r.find("span")
+                if h2 is None or h3 is None or span is None:
+                    # Some entries lack a length (or other fields): not usable
+                    print(
+                        f"Skipping incomplete entry on {k_url}: {r.get_text(' ', strip=True)[:80]}"
+                    )
+                    continue
+                name = h2.text.replace("\xa0", " ").strip()
+                cantons = h3.text.replace("\xa0", " ").strip()
+                length = span.text.replace("\xa0", " ").strip()
+                try:
+                    len_int = int(length.split(" ")[1])
+                except (IndexError, ValueError):
+                    print(
+                        f"Skipping entry with unparsable length: {name!r}: {length!r}"
+                    )
+                    continue
                 if len_int < 10:
                     continue
                 river_class = r.findAll("span")[-1].text.replace("\xa0", " ").strip()
