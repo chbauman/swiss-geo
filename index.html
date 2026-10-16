@@ -9,8 +9,8 @@
 
     <script>
       const NBSP = "\u00a0";
-      // Selected categories (at least one); the current question's category
-      const selected = new Set(["gem"]);
+      // Selected categories (at least one, all by default); filled on load
+      const selected = new Set();
       let currentKey = null;
 
       function load_json(path) {
@@ -193,6 +193,7 @@
           li.appendChild(btn);
           list.appendChild(li);
         }
+        Object.keys(categories).forEach((key) => selected.add(key));
         updateChips();
         reload();
       });
