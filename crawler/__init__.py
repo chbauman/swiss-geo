@@ -2,6 +2,8 @@ from typing import List
 
 import requests
 from bs4 import BeautifulSoup
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from crawler.util import strip_tags, remove_tags, remove_comments, remove_empty_tags
 
@@ -12,6 +14,17 @@ RANDOM_WIKI_ARTICLE_URL = "https://de.wikipedia.org/wiki/Spezial:Zuf%C3%A4llige_
 HEADERS = {
     "User-Agent": "swiss-geo-crawler/1.0 (https://github.com/chbauman/swiss-geo)"
 }
+
+# Retry transient server errors (e.g. HTTP 500 from schweizerfluss.ch)
+_retry = Retry(
+    total=4,
+    backoff_factor=2,
+    status_forcelist=[429, 500, 502, 503, 504],
+    raise_on_status=False,
+)
+SESSION = requests.Session()
+SESSION.headers.update(HEADERS)
+SESSION.mount("https://", HTTPAdapter(max_retries=_retry))
 
 on_click = "onclick=\"document.getElementById('guess').innerHTML = '{}'\""
 t_mid = f'<span id="guess" {on_click} style="background-color:#f88;">{{}}</span>'
@@ -27,7 +40,7 @@ def get_and_clean(
 ):
     if sc_tags is None:
         sc_tags = ["a", "b", "i"]
-    response = requests.get(url, headers=HEADERS, timeout=60)
+    response = SESSION.get(url, timeout=60)
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
 

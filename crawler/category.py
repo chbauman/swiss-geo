@@ -1,6 +1,8 @@
 import json
 import os
 
+import requests
+
 from crawler import get_and_clean
 
 
@@ -156,6 +158,7 @@ c_list = [
 def scrape_swiss_rivers(project_dir: str) -> None:
     url = "https://schweizerfluss.ch/"
     res_list = []
+    skipped_pages = []
 
     for k in c_list:
         k_new = k.lower().replace("ü", "ue").replace("ö", "oe").replace("ä", "ae")
@@ -166,14 +169,25 @@ def scrape_swiss_rivers(project_dir: str) -> None:
             k_url = url + "kanton/" + k_new
             if ct > 1:
                 k_url = f"{k_url}/page/{ct}/"
-            soup = get_and_clean(
-                k_url,
-                remove_table=False,
-                remove_empty=False,
-                remove_span=False,
-                sc_tags=["b", "i"],
-                add_remove_tags=["script"],
-            )
+            try:
+                soup = get_and_clean(
+                    k_url,
+                    remove_table=False,
+                    remove_empty=False,
+                    remove_span=False,
+                    sc_tags=["b", "i"],
+                    add_remove_tags=["script"],
+                )
+            except requests.RequestException as e:
+                if ct == 1:
+                    raise
+                # A single broken sub page should not fail the whole run
+                print(f"WARNING: skipping {k_url}: {e}")
+                skipped_pages.append(k_url)
+                ct += 1
+                if ct > max_pages:
+                    break
+                continue
             res_boxes = soup.findAll("div", {"class": "resultbox"})
             for r in res_boxes:
                 h2, h3, span = r.find("h2"), r.find("h3"), r.find("span")
@@ -214,6 +228,8 @@ def scrape_swiss_rivers(project_dir: str) -> None:
                 break
 
     # Save to json
+    if skipped_pages:
+        print(f"WARNING: {len(skipped_pages)} pages skipped: {skipped_pages}")
     print(f"Total {len(res_list)} Swiss rivers.")
     write_path = os.path.join(project_dir, "data", "river.json")
     with open(write_path, "w") as f:
