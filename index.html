@@ -9,7 +9,9 @@
 
     <script>
       const NBSP = "\u00a0";
-      let category = "gem";
+      // Selected categories (at least one); the current question's category
+      const selected = new Set(["gem"]);
+      let currentKey = null;
 
       function load_json(path) {
         return fetch(path).then((response) => response.json());
@@ -135,10 +137,15 @@
       }
 
       function reload() {
-        const cat = categories[category];
+        // Pick a category uniformly, then an item within it, so that every
+        // selected category is equally likely regardless of its size.
+        const key = pick([...selected]);
+        const cat = categories[key];
         cat.data
           .then((data) => {
             const q = cat.make(pick(data));
+            currentKey = key;
+            $("quest").classList.remove("error");
             $("main_title").textContent = q.title;
             $("quest").textContent = q.question;
             $("answer").textContent = q.answer;
@@ -155,12 +162,22 @@
         setAnswerShown(true);
       }
 
-      function selectCategory(key) {
-        category = key;
-        for (const btn of document.querySelectorAll(".chip")) {
-          btn.setAttribute("aria-pressed", String(btn.dataset.key === key));
+      function toggleCategory(key) {
+        if (selected.has(key)) {
+          if (selected.size === 1) return; // keep at least one selected
+          selected.delete(key);
+        } else {
+          selected.add(key);
         }
-        reload();
+        updateChips();
+        // Keep the current question unless its category was deselected
+        if (!selected.has(currentKey)) reload();
+      }
+
+      function updateChips() {
+        for (const btn of document.querySelectorAll(".chip")) {
+          btn.setAttribute("aria-pressed", String(selected.has(btn.dataset.key)));
+        }
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -172,11 +189,12 @@
           btn.className = "chip";
           btn.dataset.key = key;
           btn.textContent = cat.label;
-          btn.addEventListener("click", () => selectCategory(key));
+          btn.addEventListener("click", () => toggleCategory(key));
           li.appendChild(btn);
           list.appendChild(li);
         }
-        selectCategory(category);
+        updateChips();
+        reload();
       });
     </script>
   </head>
@@ -185,7 +203,7 @@
       <h1>Swiss Quiz</h1>
     </header>
     <main>
-      <ul class="categories" id="categories" aria-label="Kategorie"></ul>
+      <ul class="categories" id="categories" aria-label="Kategorien (Mehrfachauswahl)"></ul>
       <section class="card" aria-live="polite">
         <h2 id="main_title"></h2>
         <p class="question" id="quest"></p>
