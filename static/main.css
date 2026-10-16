@@ -1,11 +1,13 @@
 :root {
-  --bg: #f4f6f8;
+  --bg: #eaf4fb;
   --card: #ffffff;
   --text: #26323a;
   --muted: #667782;
-  --border: #dde3e8;
-  --accent: #5f788a;
-  --accent-dark: #4a6171;
+  --border: #c9dff0;
+  --accent: #2a7bbd;
+  --accent-dark: #1f6fae;
+  --header-bg: #bfe0f7;
+  --header-text: #10304a;
   --answer-bg: #e8f3ec;
   --answer-border: #4c9a6a;
 }
@@ -23,8 +25,8 @@ body {
 }
 
 .site-header {
-  background: var(--accent);
-  color: #fff;
+  background: var(--header-bg);
+  color: var(--header-text);
   padding: 0.9rem 1rem;
 }
 
@@ -123,7 +125,7 @@ main {
   max-width: 40rem;
   margin: 0 auto;
   padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, var(--bg) 70%, rgba(244, 246, 248, 0));
+  background: linear-gradient(to top, var(--bg) 70%, rgba(234, 244, 251, 0));
 }
 
 .btn {
