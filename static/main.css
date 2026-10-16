@@ -27,7 +27,6 @@ body {
 .site-header {
   background: var(--header-bg);
   color: var(--header-text);
-  padding: 0.9rem 1rem;
 }
 
 .header-inner {
@@ -36,6 +35,8 @@ body {
   justify-content: space-between;
   max-width: 40rem;
   margin: 0 auto;
+  /* same width and side padding as <main> */
+  padding: 0.9rem 1rem;
 }
 
 .site-header h1 {
