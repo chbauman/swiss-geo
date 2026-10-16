@@ -12,8 +12,14 @@ on_click = "onclick=\"document.getElementById('guess').innerHTML = '{}'\""
 t_mid = f'<span id="guess" {on_click} style="background-color:#f88;">{{}}</span>'
 
 
-def get_and_clean(url: str, sc_tags: List = None, remove_table: bool = True,
-                  remove_span: bool = True, remove_empty: bool = True, add_remove_tags: List = None):
+def get_and_clean(
+    url: str,
+    sc_tags: List = None,
+    remove_table: bool = True,
+    remove_span: bool = True,
+    remove_empty: bool = True,
+    add_remove_tags: List = None,
+):
     if sc_tags is None:
         sc_tags = ["a", "b", "i"]
     response = requests.get(url)
@@ -21,7 +27,11 @@ def get_and_clean(url: str, sc_tags: List = None, remove_table: bool = True,
 
     # Remove unnecessary stuff
     strip_tags(soup, sc_tags)
-    rem_tag_list = ["head", "img", "sup",]
+    rem_tag_list = [
+        "head",
+        "img",
+        "sup",
+    ]
     if remove_table:
         rem_tag_list += ["table"]
     if remove_span:

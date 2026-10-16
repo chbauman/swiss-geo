@@ -1,6 +1,6 @@
 venv
 .vscode
-*/__pycache__/*
+__pycache__/
 
 debug.log
 google-chrome-stable_current_amd64.deb

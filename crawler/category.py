@@ -48,7 +48,7 @@ def scrape_swiss_lakes(project_dir: str) -> None:
     url = "https://de.wikipedia.org/wiki/Liste_der_Seen_in_der_Schweiz"
     soup = get_and_clean(url, remove_table=False)
     soup_el = soup.find("div", {"class": "mw-content-ltr"})
-    soup_el = soup_el.findAll("ul",)[1]
+    soup_el = soup_el.findAll("ul")[1]
     res_list = []
     for v in soup_el.findAll("li"):
         url_part = "_".join(v.text.split(" "))
@@ -56,7 +56,9 @@ def scrape_swiss_lakes(project_dir: str) -> None:
         if c.startswith("im"):
             c = "Kanton " + c[3:]
         new_url = f"https://de.wikipedia.org/wiki/{url_part}"
-        sub_soup = get_and_clean(new_url, remove_table=False, remove_span=False, remove_empty=False)
+        sub_soup = get_and_clean(
+            new_url, remove_table=False, remove_span=False, remove_empty=False
+        )
         lake_table = sub_soup.find("table", {"class": "wikitable"})
         for v_inner in lake_table.findAll("tr"):
             entry = [dat.text.strip() for dat in v_inner.findAll("td")]
@@ -75,7 +77,13 @@ def scrape_swiss_lakes(project_dir: str) -> None:
 
 def scrape_swiss_passes(project_dir: str) -> None:
     url = "https://de.wikipedia.org/wiki/Liste_der_Pässe_in_der_Schweiz"
-    soup = get_and_clean(url, remove_table=False, remove_empty=False, remove_span=False, sc_tags=["b", "i"])
+    soup = get_and_clean(
+        url,
+        remove_table=False,
+        remove_empty=False,
+        remove_span=False,
+        sc_tags=["b", "i"],
+    )
     mount_table = soup.findAll("table", {"class": "wikitable"})[0]
     res_list = []
     for v in mount_table.findAll("tr"):
@@ -86,7 +94,15 @@ def scrape_swiss_passes(project_dir: str) -> None:
             dst_kt = all_td[2].find("span").text
             dst_gem = all_td[2].findAll("a")[1].text
             entry = [dat.text.strip() for dat in all_td][:5]
-            entry = [entry[0], src_kt, src_gem, dst_kt, dst_gem, str(int(entry[-2])), str(int(entry[-1]))]
+            entry = [
+                entry[0],
+                src_kt,
+                src_gem,
+                dst_kt,
+                dst_gem,
+                str(int(entry[-2])),
+                str(int(entry[-1])),
+            ]
             res_list.append(entry)
             # print(entry)
 
@@ -141,17 +157,23 @@ def scrape_swiss_rivers(project_dir: str) -> None:
             k_url = url + "kanton/" + k_new
             if ct > 1:
                 k_url = f"{k_url}/page/{ct}/"
-            soup = get_and_clean(k_url, remove_table=False, remove_empty=False, remove_span=False,
-                                 sc_tags=["b", "i"], add_remove_tags=["script"])
+            soup = get_and_clean(
+                k_url,
+                remove_table=False,
+                remove_empty=False,
+                remove_span=False,
+                sc_tags=["b", "i"],
+                add_remove_tags=["script"],
+            )
             res_boxes = soup.findAll("div", {"class": "resultbox"})
             for r in res_boxes:
-                name = r.find("h2").text.replace(u'\xa0', u' ').strip()
-                cantons = r.find("h3").text.replace(u'\xa0', u' ').strip()
-                length = r.find("span").text.replace(u'\xa0', u' ').strip()
+                name = r.find("h2").text.replace("\xa0", " ").strip()
+                cantons = r.find("h3").text.replace("\xa0", " ").strip()
+                length = r.find("span").text.replace("\xa0", " ").strip()
                 len_int = int(length.split(" ")[1])
                 if len_int < 10:
                     continue
-                river_class = r.findAll("span")[-1].text.replace(u'\xa0', u' ').strip()
+                river_class = r.findAll("span")[-1].text.replace("\xa0", " ").strip()
                 river_class = " ".join(river_class.split(" ")[:-1])
                 entry = [name, cantons, length[7:], river_class[8:]]
                 res_list.append(entry)
