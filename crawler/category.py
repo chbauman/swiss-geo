@@ -51,8 +51,10 @@ def scrape_swiss_lakes(project_dir: str) -> None:
     soup_el = soup_el.findAll("ul")[1]
     res_list = []
     for v in soup_el.findAll("li"):
-        url_part = "_".join(v.text.split(" "))
-        c = " ".join(v.text.split(" ")[-2:])
+        # List entries can end in stray punctuation (e.g. "...Basel-Landschaft;")
+        text = v.text.strip().rstrip(";,. ")
+        url_part = "_".join(text.split(" "))
+        c = " ".join(text.split(" ")[-2:])
         if c.startswith("im"):
             c = "Kanton " + c[3:]
         new_url = f"https://de.wikipedia.org/wiki/{url_part}"
@@ -60,6 +62,9 @@ def scrape_swiss_lakes(project_dir: str) -> None:
             new_url, remove_table=False, remove_span=False, remove_empty=False
         )
         lake_table = sub_soup.find("table", {"class": "wikitable"})
+        if lake_table is None:
+            print(f"No lake table found at {new_url}, skipping")
+            continue
         for v_inner in lake_table.findAll("tr"):
             entry = [dat.text.strip() for dat in v_inner.findAll("td")]
             if len(entry) > 0:
