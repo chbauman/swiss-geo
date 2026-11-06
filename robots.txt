@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://swiss-geo.chrisbaumann.ch/sitemap.xml
