@@ -3,7 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Swiss Quiz</title>
+    <title>Swiss Quiz – Geografie-Quiz über die Schweiz</title>
+    <meta name="description" content="Swiss Quiz ist ein kostenloses Geografie-Quiz über die Schweiz: Gemeinden, Berge, Seen, Pässe und Flüsse. Direkt im Browser, ohne Anmeldung und ohne Werbung." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://swiss-geo.chrisbaumann.ch/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_CH" />
+    <meta property="og:site_name" content="Swiss Quiz" />
+    <meta property="og:title" content="Swiss Quiz – Geografie-Quiz über die Schweiz" />
+    <meta property="og:description" content="Swiss Quiz ist ein kostenloses Geografie-Quiz über die Schweiz: Gemeinden, Berge, Seen, Pässe und Flüsse. Direkt im Browser, ohne Anmeldung und ohne Werbung." />
+    <meta property="og:url" content="https://swiss-geo.chrisbaumann.ch/" />
+    <meta property="og:image" content="https://swiss-geo.chrisbaumann.ch/static/social-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Swiss Quiz",
+        "url": "https://swiss-geo.chrisbaumann.ch/",
+        "description": "Swiss Quiz ist ein kostenloses Geografie-Quiz über die Schweiz: Gemeinden, Berge, Seen, Pässe und Flüsse. Direkt im Browser, ohne Anmeldung und ohne Werbung.",
+        "applicationCategory": "EducationalApplication",
+        "genre": "Quiz",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Requires JavaScript",
+        "inLanguage": "de",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CHF" },
+        "image": "https://swiss-geo.chrisbaumann.ch/static/social-card.png",
+        "author": { "@type": "Person", "name": "Christian Baumann", "alternateName": "Chris Baumann", "url": "https://chrisbaumann.ch/" },
+        "codeRepository": "https://github.com/chbauman/swiss-geo"
+      }
+    </script>
     <link rel="stylesheet" type="text/css" href="static/main.css" />
     <link rel="icon" href="./data/icon.png" />
 
@@ -207,6 +239,7 @@
       </div>
     </header>
     <main>
+      <noscript><p>Swiss Quiz ist ein Geografie-Quiz über die Schweiz (Gemeinden, Berge, Seen, Pässe und Flüsse). Bitte JavaScript aktivieren, um das Quiz zu spielen.</p></noscript>
       <ul class="categories" id="categories" aria-label="Kategorien (Mehrfachauswahl)"></ul>
       <section class="card" aria-live="polite">
         <h2 id="main_title"></h2>
